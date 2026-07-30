@@ -1,0 +1,2 @@
+# User-Authenticator-App
+This program authenticates the user via email using one time password verification and then add the given credentials to the database which is going to be used again for authentication
