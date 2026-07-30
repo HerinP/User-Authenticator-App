@@ -4,10 +4,11 @@ import os
 import smtplib
 from email.message import EmailMessage
 from dotenv import load_dotenv
+import mysql.connector
+
 
 def main():
     load_dotenv()
-    pass
 
 def user_details():
     user_name = input("Enter your name: ")
@@ -59,3 +60,11 @@ def otp_by_email(message):
         server.starttls()
         server.login(os.getenv("SCRIPT_EMAIL"), os.getenv("SCRIPT_EMAIL_PASS"))
         server.send_message(message)
+
+def create_connection_mysql():
+    db = mysql.connector.connect(host=os.getenv("DB_HOST"), user=os.getenv("DB_USER"), password=os.getenv("DB_PASS"))
+    cursor = db.cursor()
+    return [db, cursor]
+
+def closing_connection_mysql(db_connection_object):
+    db_connection_object.close()
