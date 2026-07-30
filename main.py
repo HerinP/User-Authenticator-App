@@ -1,7 +1,12 @@
 import secrets
 import bcrypt
+import os
+import smtplib
+from email.message import EmailMessage
+from dotenv import load_dotenv
 
 def main():
+    load_dotenv()
     pass
 
 def user_details():
@@ -36,3 +41,21 @@ def verify_password(password1, password2):
     pass1 = password1.encode('UTF-8')
     pass2 = password2.encode('UTF-8')
     return bcrypt.checkpw(pass1, pass2)
+
+def write_email_message(otp, receiver_address):
+    message = EmailMessage()
+    message['Subject'] = "Verification Code"
+    message['To'] = receiver_address
+    message['From'] = os.getenv("SCRIPT_EMAIL")
+    message.set_content(f"Your OTP is {otp}")
+    message.add_alternative(f"""<html>
+    <h1>Verification Code</h1>
+    <p>Your OTP is {otp}</p>
+    </html>""", subtype= 'html')
+    return message
+
+def otp_by_email(message):
+    with smtplib.SMTP(host=os.getenv("SERVER_HOST"),port=os.getenv("SERVER_PORT")) as server:
+        server.starttls()
+        server.login(os.getenv("SCRIPT_EMAIL"), os.getenv("SCRIPT_EMAIL_PASS"))
+        server.send_message(message)
