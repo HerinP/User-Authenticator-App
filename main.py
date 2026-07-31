@@ -5,10 +5,28 @@ import smtplib
 from email.message import EmailMessage
 from dotenv import load_dotenv
 import mysql.connector
+import sys
 
 
 def main():
     load_dotenv()
+    user_detail_list = user_details()
+    otp = generate_otp()
+    message = write_email_message(otp, user_detail_list[1])
+    otp_by_email(message)
+    user_otp = int(input("Enter otp: "))
+    if verify_otp(user_otp, otp):
+        print("Verified!")
+    else:
+        sys.exit("Incorrect OTP!")
+    user_password = user_input_password()
+    user_hash_password = hash_password(user_password)
+    object = create_connection_mysql()
+    cursor = object.cursor()
+    cursor.execute("USE authenticate_app")
+    insert_user_details_db(object, user_detail_list[0], user_detail_list[1], user_hash_password)
+    print("LOGGED IN!")
+    closing_connection_mysql(object)
 
 def user_details():
     user_name = input("Enter your name: ")
@@ -21,7 +39,7 @@ def generate_otp():
     return otp
 
 def verify_otp(user_input_otp, generated_otp):
-    if secrets.compare_digest(user_input_otp, generated_otp):
+    if secrets.compare_digest(str(user_input_otp), str(generated_otp)):
         return 1
     else:
         return 0
@@ -70,6 +88,10 @@ def closing_connection_mysql(db_connection_object):
 
 def insert_user_details_db(db_connection_object, user_name, user_email, user_pass_hash):
     cursor = db_connection_object.cursor()
-    cursor.execute(f"INSERT INTO user values ({user_name}, {user_email}, {user_pass_hash})")
-    cursor.commit()
+    sql = ("INSERT INTO user (name, email, password_hash) values (%s, %s, %s)")
+    values = (user_name, user_email, user_pass_hash)
+    cursor.execute(sql, values)
+    db_connection_object.commit()
 
+if __name__ == '__main__':
+    main()
