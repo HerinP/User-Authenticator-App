@@ -102,5 +102,13 @@ def insert_user_details_db(db_connection_object, user_name, user_email, user_pas
     cursor.execute(sql, values)
     db_connection_object.commit()
 
+def retrieve_password_hash_from_email(db_connection_object, email):
+    cursor = db_connection_object.cursor()
+    sql = "SELECT password_hash FROM user WHERE email = %s"
+    values = (email,)
+    cursor.execute(sql, values)
+    result = cursor.fetchone()
+    return result
+
 if __name__ == '__main__':
     main()
