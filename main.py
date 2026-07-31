@@ -10,24 +10,41 @@ import sys
 
 def main():
     load_dotenv()
-    user_input_name = user_name()
-    user_input_email = user_email()
-    otp = generate_otp()
-    message = write_email_message(otp, user_input_email)
-    otp_by_email(message)
-    user_otp = int(input("Enter otp: "))
-    if verify_otp(user_otp, otp):
-        print("Verified!")
+    register_or_login = register_login()
+    if register_or_login == "register":
+        user_input_name = user_name()
+        user_input_email = user_email()
+        otp = generate_otp()
+        message = write_email_message(otp, user_input_email)
+        otp_by_email(message)
+        user_otp = int(input("Enter otp: "))
+        if verify_otp(user_otp, otp):
+            print("Verified!")
+        else:
+            sys.exit("Incorrect OTP!")
+        user_password = user_input_password()
+        user_hash_password = hash_password(user_password)
+        object = create_connection_mysql()
+        cursor = object.cursor()
+        cursor.execute("USE authenticate_app")
+        insert_user_details_db(object, user_input_name, user_input_email, user_hash_password)
+        print("LOGGED IN!")
+        closing_connection_mysql(object)
     else:
-        sys.exit("Incorrect OTP!")
-    user_password = user_input_password()
-    user_hash_password = hash_password(user_password)
-    object = create_connection_mysql()
-    cursor = object.cursor()
-    cursor.execute("USE authenticate_app")
-    insert_user_details_db(object, user_input_name, user_input_email, user_hash_password)
-    print("LOGGED IN!")
-    closing_connection_mysql(object)
+        user_input_email = user_email()
+        object = create_connection_mysql()
+        cursor = object.cursor()
+        cursor.execute("USE authenticate_app")
+        password_hash = retrieve_password_hash_from_email(object, user_input_email)
+        if password_hash:
+            user_password = user_input_password()
+            if verify_password(user_password, password_hash[0]):
+                print("LOGGED IN!") 
+            else:
+                print("WRONG PASSWORD!")
+        else:
+            sys.exit("No user was registered with this email.Try Registering! ")
+        closing_connection_mysql(object)
 
 def register_login():
     ask = input("Enter 'REGISTER' if you want to register or 'LOGIN' if you want to login. ")
