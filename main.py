@@ -6,7 +6,7 @@ from email.message import EmailMessage
 from dotenv import load_dotenv
 import mysql.connector
 import sys
-
+from inputimeout import inputimeout, TimeoutOccurred
 
 def main():
     load_dotenv()
@@ -17,7 +17,7 @@ def main():
         otp = generate_otp()
         message = write_email_message(otp, user_input_email)
         otp_by_email(message)
-        user_otp = int(input("Enter otp: "))
+        user_otp = time_limit_input(180)
         if verify_otp(user_otp, otp):
             print("Verified!")
         else:
@@ -70,6 +70,12 @@ def verify_otp(user_input_otp, generated_otp):
         return 1
     else:
         return 0
+
+def time_limit_input(timeout):
+    try:
+        return inputimeout("Enter otp: ", timeout)
+    except TimeoutOccurred:
+        sys.exit("OTP expired")
 
 def user_input_password():
     password = input("Enter password: ")
