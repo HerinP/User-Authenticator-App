@@ -10,9 +10,10 @@ import sys
 
 def main():
     load_dotenv()
-    user_detail_list = user_details()
+    user_input_name = user_name()
+    user_input_email = user_email()
     otp = generate_otp()
-    message = write_email_message(otp, user_detail_list[1])
+    message = write_email_message(otp, user_input_email)
     otp_by_email(message)
     user_otp = int(input("Enter otp: "))
     if verify_otp(user_otp, otp):
@@ -24,7 +25,7 @@ def main():
     object = create_connection_mysql()
     cursor = object.cursor()
     cursor.execute("USE authenticate_app")
-    insert_user_details_db(object, user_detail_list[0], user_detail_list[1], user_hash_password)
+    insert_user_details_db(object, user_input_name, user_input_email, user_hash_password)
     print("LOGGED IN!")
     closing_connection_mysql(object)
 
@@ -37,11 +38,11 @@ def register_login():
     else:
         sys.exit("Enter 'REGISTER' or 'LOGIN'")
     
-def user_details():
-    user_name = input("Enter your name: ")
-    user_email = input("Enter your email: ")
-    user_details_list = [user_name, user_email]
-    return user_details_list
+def user_name():
+    return input("Enter your name: ")
+
+def user_email():
+    return input("Enter your email: ")
 
 def generate_otp():
     otp = secrets.randbelow(900000) + 100000
