@@ -63,8 +63,13 @@ def otp_by_email(message):
 
 def create_connection_mysql():
     db = mysql.connector.connect(host=os.getenv("DB_HOST"), user=os.getenv("DB_USER"), password=os.getenv("DB_PASS"))
-    cursor = db.cursor()
-    return [db, cursor]
+    return db
 
 def closing_connection_mysql(db_connection_object):
     db_connection_object.close()
+
+def insert_user_details_db(db_connection_object, user_name, user_email, user_pass_hash):
+    cursor = db_connection_object.cursor()
+    cursor.execute(f"INSERT INTO user values ({user_name}, {user_email}, {user_pass_hash})")
+    cursor.commit()
+
