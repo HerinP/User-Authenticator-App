@@ -28,6 +28,15 @@ def main():
     print("LOGGED IN!")
     closing_connection_mysql(object)
 
+def register_login():
+    ask = input("Enter 'REGISTER' if you want to register or 'LOGIN' if you want to login. ")
+    if ask.lower() == 'register':
+        return 'register'
+    elif ask.lower() == 'login':
+        return 'login' 
+    else:
+        sys.exit("Enter 'REGISTER' or 'LOGIN'")
+    
 def user_details():
     user_name = input("Enter your name: ")
     user_email = input("Enter your email: ")
