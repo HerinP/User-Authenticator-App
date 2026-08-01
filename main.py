@@ -14,14 +14,23 @@ def main():
     if register_or_login == "register":
         user_input_name = user_name()
         user_input_email = user_email()
-        otp = generate_otp()
-        message = write_email_message(otp, user_input_email)
-        otp_by_email(message)
-        user_otp = time_limit_input(180)
-        if verify_otp(user_otp, otp):
-            print("Verified!")
-        else:
-            sys.exit("Incorrect OTP!")
+        generate = True
+        while generate:
+            otp = generate_otp()
+            message = write_email_message(otp, user_input_email)
+            otp_by_email(message)
+            user_otp = time_limit_input(180)
+            if user_otp:
+                if verify_otp(user_otp, otp):
+                    print("Verified!")
+                    break
+                else:
+                    print("Incorrect OTP!")
+            again = input("Enter 'Resend' to send a new verification code: ")
+            if again.lower() == 'resend':
+                generate = True
+            else:
+                sys.exit()
         user_password = user_input_password()
         user_hash_password = hash_password(user_password)
         object = create_connection_mysql()
@@ -77,9 +86,9 @@ def verify_otp(user_input_otp, generated_otp):
 
 def time_limit_input(timeout):
     try:
-        return inputimeout("Enter otp: ", timeout)
+        return int(inputimeout("Enter otp: ", timeout))
     except TimeoutOccurred:
-        sys.exit("OTP expired")
+        print("OTP expired")
 
 def user_input_password():
     password = input("Enter password: ")
