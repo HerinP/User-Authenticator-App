@@ -47,13 +47,17 @@ def main():
         closing_connection_mysql(object)
 
 def register_login():
-    ask = input("Enter 'REGISTER' if you want to register or 'LOGIN' if you want to login. ")
-    if ask.lower() == 'register':
-        return 'register'
-    elif ask.lower() == 'login':
-        return 'login' 
-    else:
-        sys.exit("Enter 'REGISTER' or 'LOGIN'")
+    print("Enter 'REGISTER' if you want to register or 'LOGIN' if you want to login or 'Exit' if you want to exit: ", end='')
+    while True:
+        ask = input()
+        if ask.lower() == 'register':
+            return 'register'
+        elif ask.lower() == 'login':
+            return 'login' 
+        elif ask.lower() == 'exit':
+            sys.exit("Thankyou...")
+        else:
+            print("Enter 'REGISTER' or 'LOGIN' or 'Exit': ", end='')
     
 def user_name():
     return input("Enter your name: ")
