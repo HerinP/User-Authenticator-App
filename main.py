@@ -123,7 +123,15 @@ def otp_by_email(message):
     with smtplib.SMTP(host=os.getenv("SERVER_HOST"),port=os.getenv("SERVER_PORT")) as server:
         server.starttls()
         server.login(os.getenv("SCRIPT_EMAIL"), os.getenv("SCRIPT_EMAIL_PASS"))
-        server.send_message(message)
+        try:
+            server.send_message(message)
+            print("OTP sent to your email")
+        except smtplib.SMTPRecipientsRefused:
+            sys.exit("Some problem with your email.Try again...")
+        except smtplib.SMTPSenderRefused:
+            sys.exit("Some problem with our system responsible for sending mail")
+        except smtplib.SMTPException as e:
+            sys.exit(f"Some error occured {e}")
 
 def create_connection_mysql():
     db = mysql.connector.connect(host=os.getenv("DB_HOST"), user=os.getenv("DB_USER"), password=os.getenv("DB_PASS"))
