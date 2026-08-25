@@ -1,0 +1,38 @@
+import bcrypt
+import sys
+
+def register_login():
+    print("Enter 'REGISTER' if you want to register or 'LOGIN' if you want to login or 'Exit' if you want to exit: ", end='')
+    while True:
+        ask = input()
+        if ask.lower() == 'register':
+            return 'register'
+        elif ask.lower() == 'login':
+            return 'login' 
+        elif ask.lower() == 'exit':
+            sys.exit("Thankyou...")
+        else:
+            print("Enter 'REGISTER' or 'LOGIN' or 'Exit': ", end='')
+    
+def user_name():
+    return input("Enter your name: ")
+
+def user_email():
+    return input("Enter your email: ")
+
+def user_input_password():
+    password = input("Enter password: ")
+    return password
+
+def hash_password(password):
+    pass_bytes = password.encode('UTF-8')
+    salt_rounds = 12
+    salt = bcrypt.gensalt(salt_rounds)
+    hash_bytes = bcrypt.hashpw(pass_bytes, salt)
+    hash_pass = hash_bytes.decode('UTF-8')
+    return hash_pass
+
+def verify_password(password1, password2):
+    pass1 = password1.encode('UTF-8')
+    pass2 = password2.encode('UTF-8')
+    return bcrypt.checkpw(pass1, pass2)
