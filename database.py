@@ -18,6 +18,18 @@ def insert_user_details_db(db_connection_object, user_name, user_email, user_pas
     cursor.execute(sql, values)
     db_connection_object.commit()
 
+def email_exists(db_connection_object, email):
+    """This function checks that email exists in database or not"""
+    cursor = db_connection_object.cursor()
+    sql = "SELECT * FROM user WHERE email = %s"
+    values = (email,)
+    cursor.execute(sql, values)
+    result = cursor.fetchone()
+    if result is not None:
+        return True
+    else:
+        return False
+
 def retrieve_password_hash_from_email(db_connection_object, email):
     """This function returns the hash password from database using given email"""
     cursor = db_connection_object.cursor()
