@@ -4,6 +4,7 @@ import os
 import sys
 
 def write_email_message(otp, receiver_address):
+    """This function creates a message object"""
     message = EmailMessage()
     message['Subject'] = "Verification Code"
     message['To'] = receiver_address
@@ -16,6 +17,7 @@ def write_email_message(otp, receiver_address):
     return message
 
 def otp_by_email(message):
+    """This function sents message to the recipient"""
     with smtplib.SMTP(host=os.getenv("SERVER_HOST"),port=os.getenv("SERVER_PORT")) as server:
         server.starttls()
         server.login(os.getenv("SCRIPT_EMAIL"), os.getenv("SCRIPT_EMAIL_PASS"))
