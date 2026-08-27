@@ -27,7 +27,7 @@ def main():
             message = write_email_message(otp, user_input_email)
             otp_by_email(message)
             user_otp = time_limit_input(180)
-            if user_otp:
+            if user_otp is not None:
                 if verify_otp(user_otp, otp):
                     print("Verified!")
                     break
