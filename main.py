@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 import sys
-from auth import register_login, user_name, user_email, user_input_password, verify_password, hash_password, validate_email
+from auth import register_login, user_name, user_email, user_input_password, verify_password, hash_password, validate_email, user_input_confirm_password
 from database import create_connection_mysql, closing_connection_mysql, insert_user_details_db,email_exists, retrieve_password_hash_from_email
 from email_service import write_email_message, otp_by_email
 from otp import generate_otp, verify_otp, time_limit_input
@@ -14,7 +14,10 @@ def main():
         user_input_email = user_email()
         if validate_email(user_input_email) == False:
             sys.exit("Enter a valid Email")
-        if email_exists:
+        conn_obj = create_connection_mysql()
+        cursor = conn_obj.cursor()
+        cursor.execute("USE authenticate_app")
+        if email_exists(conn_obj, user_input_email):
             sys.exit("This email is already registered!")
         generate = True
         while generate:
@@ -34,10 +37,10 @@ def main():
             else:
                 sys.exit()
         user_password = user_input_password()
+        if user_input_confirm_password(user_password) == False:
+            sys.exit("Passwords don't match!")
         user_hash_password = hash_password(user_password)
-        conn_obj = create_connection_mysql()
-        cursor = conn_obj.cursor()
-        cursor.execute("USE authenticate_app")
+        
         insert_user_details_db(conn_obj, user_input_name, user_input_email, user_hash_password)
         print("LOGGED IN!")
         closing_connection_mysql(conn_obj)

@@ -2,6 +2,7 @@ import bcrypt
 import sys
 import re
 import stdiomask
+import secrets
 
 def register_login():
     """This function takes the user's choice to register or login or exit"""
@@ -49,3 +50,7 @@ def validate_email(email):
     pattern = r"[\w\.-]+@[\w\.-]+\.\w{2,}"
     match = re.fullmatch(pattern, email)
     return bool(match)
+
+def user_input_confirm_password(password):
+    confirm_password = stdiomask.getpass("Confirm Password: ", mask= "*")
+    return secrets.compare_digest(password, confirm_password)
