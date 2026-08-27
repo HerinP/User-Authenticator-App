@@ -11,6 +11,8 @@ def main():
     register_or_login = register_login()
     if register_or_login == "register":
         user_input_name = user_name()
+        if user_input_name is None:
+            sys.exit("Enter a valid name")
         user_input_email = user_email()
         if validate_email(user_input_email) == False:
             sys.exit("Enter a valid Email")

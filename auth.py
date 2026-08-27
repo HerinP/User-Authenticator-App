@@ -20,7 +20,11 @@ def register_login():
     
 def user_name():
     """This function returns the name by user input"""
-    return input("Enter your name: ")
+    name = input("Enter your name: ").strip()
+    if name:
+        return name
+    else:
+        return None
 
 def user_email():
     """This function returns the email by user input"""
