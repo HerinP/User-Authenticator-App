@@ -1,6 +1,7 @@
 import bcrypt
 import sys
 import re
+import stdiomask
 
 def register_login():
     """This function takes the user's choice to register or login or exit"""
@@ -26,7 +27,7 @@ def user_email():
 
 def user_input_password():
     """This function returns the password by user input"""
-    password = input("Enter password: ")
+    password = stdiomask.getpass("Enter Password: ", mask= "*")
     return password
 
 def hash_password(password):
