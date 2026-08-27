@@ -15,7 +15,4 @@ def time_limit_input(timeout):
 
 def verify_otp(user_input_otp, generated_otp):
     """This function verifies the generated otp and user input otp"""
-    if secrets.compare_digest(str(user_input_otp), str(generated_otp)):
-        return 1
-    else:
-        return 0
+    return secrets.compare_digest(str(user_input_otp), str(generated_otp))

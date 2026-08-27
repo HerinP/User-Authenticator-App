@@ -21,8 +21,7 @@ def main():
         cursor.execute("USE authenticate_app")
         if email_exists(conn_obj, user_input_email):
             sys.exit("This email is already registered!")
-        generate = True
-        while generate:
+        while True:
             otp = generate_otp()
             message = write_email_message(otp, user_input_email)
             otp_by_email(message)
@@ -33,10 +32,8 @@ def main():
                     break
                 else:
                     print("Incorrect OTP!")
-            again = input("Enter 'Resend' to send a new verification code: ")
-            if again.lower() == 'resend':
-                generate = True
-            else:
+            resend = input("Enter 'Resend' to send a new verification code: ")
+            if resend.lower() != 'resend':
                 sys.exit()
         user_password = user_input_password()
         if user_input_confirm_password(user_password) == False:
