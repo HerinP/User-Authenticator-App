@@ -1,9 +1,9 @@
 import mysql.connector
-import os
+from config import DB_HOST, DB_USER, DB_PASS
 
 def create_connection_mysql():
     """This function returns a connection object of MySQL by creating a connection"""
-    db = mysql.connector.connect(host=os.getenv("DB_HOST"), user=os.getenv("DB_USER"), password=os.getenv("DB_PASS"))
+    db = mysql.connector.connect(host=DB_HOST, user=DB_USER, password=DB_PASS)
     return db
 
 def closing_connection_mysql(db_connection_object):

@@ -6,8 +6,6 @@ from email_service import write_email_message, otp_by_email
 from otp import generate_otp, verify_otp, time_limit_input
 
 def main():
-
-    load_dotenv()
     register_or_login = register_login()
     if register_or_login == "register":
         user_input_name = user_name()
