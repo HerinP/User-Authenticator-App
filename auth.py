@@ -1,5 +1,6 @@
 import bcrypt
 import sys
+import re
 
 def register_login():
     """This function takes the user's choice to register or login or exit"""
@@ -42,3 +43,8 @@ def verify_password(password1, password2):
     pass1 = password1.encode('UTF-8')
     pass2 = password2.encode('UTF-8')
     return bcrypt.checkpw(pass1, pass2)
+
+def validate_email(email):
+    pattern = r"[\w\.-]+@[\w\.-]+\.\w{2,}"
+    match = re.fullmatch(pattern, email)
+    return bool(match)
