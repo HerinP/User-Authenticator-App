@@ -19,9 +19,9 @@ def write_email_message(otp, receiver_address):
 def otp_by_email(message):
     """This function sents message to the recipient"""
     with smtplib.SMTP(host=os.getenv("SERVER_HOST"),port=os.getenv("SERVER_PORT")) as server:
-        server.starttls()
-        server.login(os.getenv("SCRIPT_EMAIL"), os.getenv("SCRIPT_EMAIL_PASS"))
         try:
+            server.starttls()
+            server.login(os.getenv("SCRIPT_EMAIL"), os.getenv("SCRIPT_EMAIL_PASS"))
             server.send_message(message)
             print("OTP sent to your email")
         except smtplib.SMTPRecipientsRefused:
