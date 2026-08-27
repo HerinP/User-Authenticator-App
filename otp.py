@@ -3,7 +3,9 @@ from inputimeout import inputimeout, TimeoutOccurred
 
 def generate_otp():
     """This function generates a random 6-Digits number"""
-    otp = secrets.randbelow(900000) + 100000
+    END_AT = 900000
+    SUM_UP = 100000
+    otp = secrets.randbelow(END_AT) + SUM_UP
     return otp
 
 def time_limit_input(timeout):

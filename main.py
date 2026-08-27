@@ -21,11 +21,12 @@ def main():
         cursor.execute("USE authenticate_app")
         if email_exists(conn_obj, user_input_email):
             sys.exit("This email is already registered!")
+        OTP_TIME_LIMIT = 180
         while True:
             otp = generate_otp()
             message = write_email_message(otp, user_input_email)
             otp_by_email(message)
-            user_otp = time_limit_input(180)
+            user_otp = time_limit_input(OTP_TIME_LIMIT)
             if user_otp is not None:
                 if verify_otp(user_otp, otp):
                     print("Verified!")

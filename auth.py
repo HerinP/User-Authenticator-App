@@ -37,8 +37,9 @@ def user_input_password():
 
 def hash_password(password):
     """This function returns the hash password from the given password """
+    BCRYPT_ROUNDS = 12
     pass_bytes = password.encode('UTF-8')
-    salt_rounds = 12
+    salt_rounds = BCRYPT_ROUNDS
     salt = bcrypt.gensalt(salt_rounds)
     hash_bytes = bcrypt.hashpw(pass_bytes, salt)
     hash_pass = hash_bytes.decode('UTF-8')
