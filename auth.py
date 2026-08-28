@@ -28,7 +28,11 @@ def user_name():
 
 def user_email():
     """This function returns the email by user input"""
-    return input("Enter your email: ")
+    email = input("Enter your email: ").strip()
+    if email:
+        return email
+    else:
+        return None
 
 def user_input_password():
     """This function returns the password by user input"""
