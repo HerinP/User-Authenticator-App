@@ -8,8 +8,6 @@ from otp import generate_otp, verify_otp, time_limit_input
 def main():
     try:
         conn_obj = create_connection_mysql()
-        cursor = conn_obj.cursor()
-        cursor.execute("USE authenticate_app")
         register_or_login = register_login()
         if register_or_login == "register":
             user_input_name = user_name()
