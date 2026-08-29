@@ -51,9 +51,9 @@ def main():
                 if verify_password(user_password, password_hash[0]):
                     print("LOGGED IN!") 
                 else:
-                    print("WRONG PASSWORD!")
+                    print("Entered Email or password is wrong")
             else:
-                sys.exit("No user was registered with this email.Try Registering! ")
+                print("Entered Email or password is wrong")
     finally:
         closing_connection_mysql(conn_obj)
 
