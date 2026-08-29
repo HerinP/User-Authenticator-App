@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 import sys
 from auth import register_login, user_name, user_email, user_input_password, verify_password, hash_password, validate_email, user_input_confirm_password
 from database import create_connection_mysql, closing_connection_mysql, insert_user_details_db,email_exists, retrieve_password_hash_from_email
-from email_service import write_email_message, otp_by_email
+from email_service import email_otp_message, email_otp_sending
 from otp import generate_otp, verify_otp, time_limit_input
 
 def main():
@@ -21,8 +21,8 @@ def main():
             OTP_TIME_LIMIT = 180
             while True:
                 otp = generate_otp()
-                message = write_email_message(otp, user_input_email)
-                otp_by_email(message)
+                message = email_otp_message(otp, user_input_email)
+                email_otp_sending(message)
                 user_otp = time_limit_input(OTP_TIME_LIMIT)
                 if user_otp is not None:
                     if verify_otp(user_otp, otp):
