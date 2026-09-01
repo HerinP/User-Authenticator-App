@@ -40,7 +40,6 @@ def main():
             
             insert_user_details_db(conn_obj, user_input_name, user_input_email, user_hash_password)
             print("LOGGED IN!")
-            closing_connection_mysql(conn_obj)
         else:
             user_input_email = user_email()
             if validate_email(user_input_email) == False:
@@ -55,7 +54,8 @@ def main():
             else:
                 print("Entered Email or password is wrong")
     finally:
-        closing_connection_mysql(conn_obj)
+        if conn_obj:
+            closing_connection_mysql(conn_obj)
 
 if __name__ == '__main__':
     main()
